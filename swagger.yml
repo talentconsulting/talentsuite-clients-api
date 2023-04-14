@@ -345,6 +345,7 @@ paths:
               description: location of the resource created
               type: string
               format: uri
+
     delete:
       produces  :
         - application/json
@@ -370,6 +371,133 @@ paths:
         200:
           description: Deleted
 
+  /clients/{clientId}/projects/{projectId}/sows/{sowId}/files:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: clientId
+          description: The id of the client to update
+          type: string
+          required: true
+        - in: path
+          name: projectId
+          description: The id of the project to update
+          type: string
+          required: true
+        - in: path
+          name: sowId
+          description: The id of the sow to update
+          type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/sowFile"
+    post:
+      summary: Uploads a file.
+      consumes:
+      - multipart/form-data
+      parameters:
+      - in: formData
+        name: fileData
+        type: file
+        description: The file data to upload
+        required: true
+      - in: formData
+        name: filename
+        type: string
+        required: true
+        description: Name of the file to upload
+      - in: path
+        name: clientId
+        description: The id of the report to update
+        type: string
+        required: true
+      - in: path
+        name: projectId
+        description: The id of the project to update
+        type: string
+        required: true
+      - in: path
+        name: sowId
+        description: The id of the sow to update
+        type: string
+        required: true
+        
+      responses:
+        201:
+          description: Created
+          headers:
+            location:
+              description: location of the resource created
+              type: string
+              format: uri
+    
+  /clients/{clientId}/projects/{projectId}/sows/{sowId}/files{fileId}:
+    get:
+      produces:
+        - application/pdf
+        - application/msword
+      parameters:
+        - in: path
+          name: clientId
+          description: The id of the client to update
+          type: string
+          required: true
+        - in: path
+          name: projectId
+          description: The id of the project to update
+          type: string
+          required: true
+        - in: path
+          name: sowId
+          description: The id of the sow to update
+          type: string
+          required: true
+        - in: path
+          name: fileId
+          description: The id of the file to fetch
+          type: string
+          required: true
+      responses:
+        404:
+          description: file not found
+        200:
+          description: OK
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: clientId
+          description: The id of the client to update
+          type: string
+          required: true
+        - in: path
+          name: projectId
+          description: The id of the project to update
+          type: string
+          required: true
+        - in: path
+          name: sowId
+          description: The id of the sow to update
+          type: string
+          required: true
+        - in: path
+          name: fileId
+          description: The id of the file to fetch
+          type: string
+          required: true
+      responses:
+        404:
+          description: file not found
+        200:
+          description: OK
 definitions:
   info:
     type: object
@@ -404,11 +532,32 @@ definitions:
     properties: 
       id: 
         type: string
+      created: 
+        type: string
+        format: date-time
+      name: 
+        type: string
+      reference: 
+        type: string
+      startDate: 
+        type: string
+        format: date
+      endDate: 
+        type: string
+        format: date
+      contractDetails: 
+        type: string
   
   client:
     type: object
     properties: 
       id: 
+        type: string
+      name: 
+        type: string
+      contactName: 
+        type: string
+      contactEmail: 
         type: string
 
   sow:
@@ -416,7 +565,34 @@ definitions:
     properties: 
       id: 
         type: string
-  
+      projectId: 
+        type: string
+      created: 
+        type: string
+        format: date-time
+      isChangeRequest:
+        type: boolean
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+    
+  sowFile:
+    type: object
+    properties: 
+      id: 
+        type: string
+      name: 
+        type: string
+      created: 
+        type: string
+        format: date-time
+      data:
+        type: string
+        format: binary
+
   clientResponse:
     type: object
     properties: 
