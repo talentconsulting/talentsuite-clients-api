@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TalentConsulting.TalentSuite.Reports.API.Migrations
+namespace TalentConsulting.TalentSuite.Clients.API.Migrations
 {
     public partial class CreateIntialSchema : Migration
     {

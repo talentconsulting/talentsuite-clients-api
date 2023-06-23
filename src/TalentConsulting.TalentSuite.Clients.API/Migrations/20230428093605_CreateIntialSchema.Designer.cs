@@ -9,7 +9,7 @@ using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository
 
 #nullable disable
 
-namespace TalentConsulting.TalentSuite.Reports.API.Migrations
+namespace TalentConsulting.TalentSuite.Clients.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230428093605_CreateIntialSchema")]
@@ -24,7 +24,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Audit", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Audit", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -45,7 +45,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("Audits");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Client", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Client", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -70,7 +70,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("cients");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.ClientProject", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.ClientProject", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -94,7 +94,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("clientprojects");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Contact", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Contact", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -123,7 +123,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("contacts");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Notification", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Notification", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -151,7 +151,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("notifications");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -183,7 +183,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("projects");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.ProjectRole", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.ProjectRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -207,7 +207,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("projectroles");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Recipient", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Recipient", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -234,7 +234,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("recipients");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Report", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Report", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -272,7 +272,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("reports");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Risk", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Risk", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -303,7 +303,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("risks");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Sow", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Sow", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -334,7 +334,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("sows");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.User", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -365,7 +365,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.UserGroup", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.UserGroup", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -385,7 +385,7 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("usergroups");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.UserProjectRole", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.UserProjectRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -409,88 +409,88 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.ToTable("userprojectroles");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.ClientProject", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.ClientProject", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Client", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Client", null)
                         .WithMany("ClientProjects")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", null)
                         .WithMany("ClientProjects")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Contact", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Contact", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", null)
                         .WithMany("Contacts")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Recipient", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Recipient", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Notification", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Notification", null)
                         .WithMany("Recipients")
                         .HasForeignKey("Notificationid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Report", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Report", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", null)
                         .WithMany("Reports")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.User", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.User", null)
                         .WithMany("Reports")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Risk", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Risk", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Report", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Report", null)
                         .WithMany("Risks")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Sow", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Sow", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", null)
                         .WithMany("Sows")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.User", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.User", b =>
                 {
-                    b.HasOne("TalentConsulting.TalentSuite.Reports.Core.Entities.UserGroup", null)
+                    b.HasOne("TalentConsulting.TalentSuite.Clients.Core.Entities.UserGroup", null)
                         .WithMany("Users")
                         .HasForeignKey("UserGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Client", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Client", b =>
                 {
                     b.Navigation("ClientProjects");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Notification", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Notification", b =>
                 {
                     b.Navigation("Recipients");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Project", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Project", b =>
                 {
                     b.Navigation("ClientProjects");
 
@@ -501,17 +501,17 @@ namespace TalentConsulting.TalentSuite.Reports.API.Migrations
                     b.Navigation("Sows");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.Report", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.Report", b =>
                 {
                     b.Navigation("Risks");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.User", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.User", b =>
                 {
                     b.Navigation("Reports");
                 });
 
-            modelBuilder.Entity("TalentConsulting.TalentSuite.Reports.Core.Entities.UserGroup", b =>
+            modelBuilder.Entity("TalentConsulting.TalentSuite.Clients.Core.Entities.UserGroup", b =>
                 {
                     b.Navigation("Users");
                 });
