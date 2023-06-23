@@ -67,6 +67,8 @@ paths:
               description: location of the resource created
               type: string
               format: uri
+        400:
+          description: Validation has failed            
 
   /clients/{clientId}:
     get:
@@ -80,7 +82,7 @@ paths:
           required: true
       responses:
         404:
-          description: The report is not found
+          description: The client is not found
         200:
           description: OK
           schema:
@@ -91,7 +93,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: The report to create.
+          description: The client to create.
           schema:
             $ref: "#/definitions/clientRequest"
         - in: path
@@ -116,7 +118,7 @@ paths:
       parameters:
         - in: path
           name: clientId
-          description: The id of the report to update
+          description: The id of the client to update
           type: string
           required: true
       responses:
@@ -132,7 +134,7 @@ paths:
       parameters:
         - in: path
           name: clientId
-          description: The id of the report to update
+          description: The id of the project to update
           type: string
           required: true
       responses:
@@ -148,12 +150,12 @@ paths:
       parameters:
         - in: body
           name: body
-          description: The client to create.
+          description: The project to create.
           schema:
             $ref: "#/definitions/projectRequest"
         - in: path
           name: clientId
-          description: The id of the report to update
+          description: The id of the project to update
           type: string
           required: true
       responses:
@@ -534,8 +536,6 @@ definitions:
   projectRequest:
     type: object
     properties: 
-      id: 
-        type: string
       created: 
         type: string
         format: date-time
@@ -562,8 +562,6 @@ definitions:
   clientRequest:
     type: object
     properties: 
-      id: 
-        type: string
       name: 
         type: string
       contactName: 
