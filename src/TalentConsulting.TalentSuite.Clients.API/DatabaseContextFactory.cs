@@ -1,0 +1,68 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
+using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Interceptors;
+using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
+using TalentConsulting.TalentSuite.Clients.Infrastructure.Service;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
+namespace TalentConsulting.TalentSuite.Clients.API;
+
+[ExcludeFromCodeCoverage]
+public class DatabaseContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+{
+    public ApplicationDbContext CreateDbContext(string[] args)
+    {
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+
+        string useDbType = configuration.GetValue<string>("UseDbType");
+
+        switch (useDbType)
+        {
+            default:
+                builder.UseInMemoryDatabase("FH-LAHubDb");
+                break;
+
+            case "UseSqlLite":
+                {
+                    var connectionString = configuration.GetConnectionString("DefaultConnection");
+                    if (connectionString != null)
+                        builder.UseSqlite(connectionString, b => b.MigrationsAssembly("TalentConsulting.TalentSuite.Clients.API"));
+                }
+                break;
+            case "UseSqlServerDatabase":
+                {
+                    var connectionString = configuration.GetConnectionString("DefaultConnection");
+                    if (connectionString != null)
+                        builder.UseSqlServer(connectionString, b => b.MigrationsAssembly("TalentConsulting.TalentSuite.Clients.API"));
+
+                }
+                break;
+
+            case "UsePostgresDatabase":
+                {
+                    var connectionString = configuration.GetConnectionString("DefaultConnection");
+                    if (connectionString != null)
+                        builder.UseNpgsql(connectionString, b => b.MigrationsAssembly("TalentConsulting.TalentSuite.Clients.API"));
+
+                }
+                break;
+        }
+
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor = new(new CurrentUserService(new HttpContextAccessor()), new DateTimeService());
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        return new ApplicationDbContext(builder.Options,
+#if USE_DISPATCHER
+            null, 
+#endif
+            auditableEntitySaveChangesInterceptor);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+    }
+}
