@@ -71,7 +71,7 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, s
         for (var i = 0; i < unSavedEntities.Count; i++)
         {
             var unSavedItem = unSavedEntities.ElementAt(i);
-            var savedItem = existing.FirstOrDefault(x => x.Id == unSavedItem.Id);
+            var savedItem = existing.Find(x => x.Id == unSavedItem.Id);
             returnList.Add(savedItem ?? unSavedItem);
         }
 
