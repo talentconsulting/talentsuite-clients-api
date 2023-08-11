@@ -1,0 +1,29 @@
+{
+    "$id": "https://talentsuite.uk/schemas/ClientUpdated",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "type": "object",
+    "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time"},
+        "name": { 
+            "type": "string" 
+        },
+        "contactName": { 
+            "type": "string" 
+        },
+        "contactEmail": { 
+            "type": "string" 
+        },
+        "userId": { 
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "firstname": { "type": "string" },
+                "surname": { "type": "string" }
+            }            
+        }
+    },
+    "required": ["id", "name", "contactName", "contactEmail"],
+    "additionalProperties": false
+}
