@@ -12,8 +12,8 @@ COPY TalentConsulting.TalentSuite.Clients.API.sln ./
 # Copy Dependencies
 COPY ["src/TalentConsulting.TalentSuite.Clients.API/TalentConsulting.TalentSuite.Clients.API.csproj", "src/TalentConsulting.TalentSuite.Clients.API/"]
 COPY ["src/TalentConsulting.TalentSuite.Clients.Core/TalentConsulting.TalentSuite.Clients.Core.csproj", "src/TalentConsulting.TalentSuite.Clients.Core/"]
-COPY ["src/TalentConsulting.TalentSuite.Clients.Infrastructure/TalentConsulting.TalentSuite.Clients.Infrastructure.csproj", "src/TalentConsulting.TalentSuite.Clients.Infrastructure.Infrastructure/"]
-COPY ["src/TalentConsulting.TalentSuite.Clients.Common/TalentConsulting.TalentSuite.Clients.csproj", "src/TalentConsulting.TalentSuite.Clients.Common/"]
+COPY ["src/TalentConsulting.TalentSuite.Clients.Infrastructure/TalentConsulting.TalentSuite.Clients.Infrastructure.csproj", "src/TalentConsulting.TalentSuite.Clients.Infrastructure/"]
+COPY ["src/TalentConsulting.TalentSuite.Clients.Common/TalentConsulting.TalentSuite.Clients.Common.csproj", "src/TalentConsulting.TalentSuite.Clients.Common/"]
 
 # Restore Project
 RUN dotnet restore "src/TalentConsulting.TalentSuite.Clients.API/TalentConsulting.TalentSuite.Clients.API.csproj"
