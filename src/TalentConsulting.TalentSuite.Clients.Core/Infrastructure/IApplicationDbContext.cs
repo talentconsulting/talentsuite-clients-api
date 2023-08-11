@@ -5,7 +5,8 @@ namespace TalentConsulting.TalentSuite.Clients.Core.Infrastructure;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Report> Reports { get; }
+    public DbSet<Client> Clients { get; }
+    public DbSet<ClientProject> ClientProjects { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
