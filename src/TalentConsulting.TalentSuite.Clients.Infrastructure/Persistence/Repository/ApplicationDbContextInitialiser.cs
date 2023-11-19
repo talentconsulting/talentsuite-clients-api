@@ -18,10 +18,7 @@ public class ApplicationDbContextInitialiser
     {
         try
         {
-            if (restartDatabase)
-            {
-                await _context.Database.EnsureDeletedAsync();
-            }
+            
 
             if (_context.Database.IsInMemory())
             {
@@ -31,13 +28,13 @@ public class ApplicationDbContextInitialiser
 
             if (_context.Database.IsSqlite())
             {
+                if (restartDatabase)
+                {
+                    await _context.Database.EnsureDeletedAsync();
+                }
                 await _context.Database.EnsureCreatedAsync();
             }
 
-            if (_context.Database.IsSqlServer() || _context.Database.IsNpgsql())
-            {
-                await _context.Database.MigrateAsync();
-            }
         }
         catch (Exception ex)
         {
