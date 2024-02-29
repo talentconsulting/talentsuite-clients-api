@@ -35,8 +35,9 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
         try
         {
             var config = new ConfigurationBuilder()
-               .AddUserSecrets<Program>()
-               .Build();
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                 .AddJsonFile("appsettings.test.json")
+                 .Build();
 
             _configuration = config;
 
