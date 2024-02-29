@@ -100,6 +100,22 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
     }
 
     [Fact]
+    public async Task ThenUpdateClientWithNullCommand()
+    {
+        // Arrange
+        var logger = new Mock<ILogger<UpdateClientCommandHandler>>();
+        var handler = new UpdateClientCommandHandler(GetApplicationDbContext(), _mapper, logger.Object);
+
+
+        // Act
+        //Assert
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(null, CancellationToken.None));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+    }
+    
+
+    [Fact]
     public async Task ThenHandle_ThrowsException_WhenClientNotFound()
     {
         // Arrange
