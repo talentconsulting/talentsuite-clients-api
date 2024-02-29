@@ -53,7 +53,7 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, s
             throw;
         }
 
-        if (request is not null && request.ClientDto is not null)
+        if (request.ClientDto is not null)
             return request.ClientDto.Id;
         else
             return string.Empty;
@@ -63,7 +63,7 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, s
     {
         var returnList = new List<ClientProject>();
 
-        if (unSavedEntities is null || !unSavedEntities.Any())
+        if (unSavedEntities is null || unSavedEntities.Count == 0)
             return returnList;
 
         var existing = _context.ClientProjects.Where(e => unSavedEntities.Select(c => c.Id).Contains(e.Id)).ToList();

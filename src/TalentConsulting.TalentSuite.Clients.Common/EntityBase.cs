@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TalentConsulting.TalentSuite.Clients.Common;
 
 /// <summary>
 /// Base types for all Entities which track state using a given Id.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public abstract class EntityBaseEx<Tid> : EntityBase<Tid>
 {
     public DateTime? Created { get; set; } = default;

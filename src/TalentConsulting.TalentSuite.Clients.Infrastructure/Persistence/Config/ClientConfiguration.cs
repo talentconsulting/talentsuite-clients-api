@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
 
 namespace TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Config;
 
+[ExcludeFromCodeCoverage]
 public class ClientConfiguration
 {
     public void Configure(EntityTypeBuilder<Client> builder)
