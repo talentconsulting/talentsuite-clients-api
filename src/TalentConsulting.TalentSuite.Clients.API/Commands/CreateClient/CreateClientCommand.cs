@@ -59,7 +59,7 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, s
             return string.Empty;
     }
 
-    private ICollection<ClientProject> AttachExistingClientProjects(ICollection<ClientProject>? unSavedEntities)
+    private List<ClientProject> AttachExistingClientProjects(ICollection<ClientProject>? unSavedEntities)
     {
         var returnList = new List<ClientProject>();
 

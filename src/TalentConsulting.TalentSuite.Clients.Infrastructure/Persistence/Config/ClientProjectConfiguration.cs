@@ -5,9 +5,9 @@ using TalentConsulting.TalentSuite.Clients.Core.Entities;
 namespace TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Config;
 
 [ExcludeFromCodeCoverage]
-public class ClientProjectConfiguration
+public static class ClientProjectConfiguration
 {
-    public void Configure(EntityTypeBuilder<ClientProject> builder)
+    public static void Configure(EntityTypeBuilder<ClientProject> builder)
     {
         builder.Property(t => t.Id)
             .IsRequired();

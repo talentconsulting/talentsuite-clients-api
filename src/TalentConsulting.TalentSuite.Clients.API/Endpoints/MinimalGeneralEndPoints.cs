@@ -12,7 +12,7 @@ public class MinimalGeneralEndPoints
         {
             try
             {
-                var assembly = typeof(WebMarker).Assembly;
+                var assembly = typeof(IWebMarker).Assembly;
 
                 var creationDate = File.GetCreationTime(assembly.Location);
                 var version = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;

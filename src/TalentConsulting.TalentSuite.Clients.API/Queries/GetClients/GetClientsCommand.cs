@@ -34,7 +34,7 @@ public class GetClientsCommandHandler : IRequestHandler<GetClientsCommand, Pagin
         var entities = _context.Clients
             .Include(x => x.ClientProjects);
 
-        var filteredClients = await entities.Select(x => new ClientDto(x.Id.ToString(), x.Name, x.ContactName, x.ContactEmail, EntityToDtoHelper.GetClientProjects(x.ClientProjects))).ToListAsync();
+        var filteredClients = await entities.Select(x => new ClientDto(x.Id.ToString(), x.Name, x.ContactName, x.ContactEmail, EntityToDtoHelper.GetClientProjects(x.ClientProjects))).ToListAsync(cancellationToken);
 
         if (request != null)
         {

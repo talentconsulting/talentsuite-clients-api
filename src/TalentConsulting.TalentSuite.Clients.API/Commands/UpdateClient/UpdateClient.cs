@@ -61,11 +61,11 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
             return string.Empty;
     }
 
-    private ICollection<ClientProject> AttachExistingClientProjects(ICollection<ClientProjectDto>? unSavedEntities)
+    private List<ClientProject> AttachExistingClientProjects(ICollection<ClientProjectDto>? unSavedEntities)
     {
         var returnList = new List<ClientProject>();
 
-        if (unSavedEntities is null || !unSavedEntities.Any())
+        if (unSavedEntities is null || unSavedEntities.Count == 0)
             return returnList;
 
         var existing = _context.ClientProjects.Where(e => unSavedEntities.Select(c => c.Id).Contains(e.Id.ToString())).ToList();

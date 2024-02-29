@@ -2,6 +2,8 @@
 
 namespace TalentConsulting.TalentSuite.Clients.Common.Entities;
 
+#pragma warning disable S107 // Methods should not have too many parameters
+
 [ExcludeFromCodeCoverage]
 public record ReportDto
 {
@@ -34,3 +36,5 @@ public record ReportDto
 #endif
 
 }
+
+#pragma warning restore S107 // Methods should not have too many parameters

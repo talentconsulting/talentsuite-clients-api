@@ -13,6 +13,7 @@ namespace TalentConsulting.TalentSuite.Clients.API.Endpoints;
 [ExcludeFromCodeCoverage]
 public class MinimalClientEndPoints
 {
+    private readonly string[] tag = new string[] { "Clients" };
     public void RegisterClientEndPoints(WebApplication app)
     {
         app.MapPost("api/clients", [Authorize(Policy = "TalentConsultingUser")] async ([FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator) =>
@@ -28,7 +29,7 @@ public class MinimalClientEndPoints
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 throw;
             }
-        }).WithMetadata(new SwaggerOperationAttribute("Clients", "Create client") { Tags = new[] { "Clients" } });
+        }).WithMetadata(new SwaggerOperationAttribute("Clients", "Create client") { Tags = tag });
 
         app.MapPut("api/clients/{id}", [Authorize(Policy = "TalentConsultingUser")] async (string id, [FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator, ILogger<MinimalClientEndPoints> logger) =>
         {
@@ -44,7 +45,7 @@ public class MinimalClientEndPoints
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 throw;
             }
-        }).WithMetadata(new SwaggerOperationAttribute("Update Client", "Update Client By Id") { Tags = new[] { "Clients" } });
+        }).WithMetadata(new SwaggerOperationAttribute("Update Client", "Update Client By Id") { Tags = tag });
 
         app.MapGet("api/clients", [Authorize(Policy = "TalentConsultingUser")] async (int? pageNumber, int? pageSize, CancellationToken cancellationToken, ISender _mediator) =>
         {
@@ -59,6 +60,6 @@ public class MinimalClientEndPoints
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 throw;
             }
-        }).WithMetadata(new SwaggerOperationAttribute("Get Clients", "Get Clients Paginated") { Tags = new[] { "Clients" } });
+        }).WithMetadata(new SwaggerOperationAttribute("Get Clients", "Get Clients Paginated") { Tags = tag });
     }
 }
