@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TalentConsulting.TalentSuite.Clients.API.Endpoints;
 
+[ExcludeFromCodeCoverage]
 public class MinimalGeneralEndPoints
 {
     public void RegisterMinimalGeneralEndPoints(WebApplication app)

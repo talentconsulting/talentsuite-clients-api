@@ -13,6 +13,7 @@ public abstract class EntityBaseEx<Tid> : EntityBase<Tid>
 
 }
 
+[ExcludeFromCodeCoverage]
 public abstract class EntityBase<Tid>
 {
     public Tid Id { get; set; } = default!;

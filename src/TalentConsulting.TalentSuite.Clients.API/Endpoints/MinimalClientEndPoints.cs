@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Diagnostics.CodeAnalysis;
 using TalentConsulting.TalentSuite.Clients.API.Commands.CreateClient;
 using TalentConsulting.TalentSuite.Clients.API.Commands.UpdateClient;
 using TalentConsulting.TalentSuite.Clients.API.Queries.GetClients;
@@ -9,6 +10,7 @@ using TalentConsulting.TalentSuite.Clients.Common.Entities;
 
 namespace TalentConsulting.TalentSuite.Clients.API.Endpoints;
 
+[ExcludeFromCodeCoverage]
 public class MinimalClientEndPoints
 {
     public void RegisterClientEndPoints(WebApplication app)
