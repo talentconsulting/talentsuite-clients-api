@@ -1,14 +1,15 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TalentConsulting.TalentSuite.Clients.API;
-using TalentConsulting.TalentSuite.Clients.Core.Entities;
 using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
 
 namespace TalentConsulting.TalentSuite.Clients.FunctionalTests;
+
+#pragma warning disable S3881
 
 public abstract class BaseWhenUsingApiUnitTests : IDisposable
 {
@@ -140,3 +141,4 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
         return false;
     }
 }
+#pragma warning restore S3881
