@@ -33,7 +33,7 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
     }
     public async Task<string> Handle(UpdateClientCommand request, CancellationToken cancellationToken)
     {
-        var entity = _context.Clients.FirstOrDefault(x => x.Id == request.Id);
+        var entity = _context.Clients.FirstOrDefault(x => x.Id.ToString() == request.Id);
         if (entity == null)
         {
             throw new NotFoundException(nameof(Client), request.Id);
@@ -68,17 +68,25 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
         if (unSavedEntities is null || !unSavedEntities.Any())
             return returnList;
 
-        var existing = _context.ClientProjects.Where(e => unSavedEntities.Select(c => c.Id).Contains(e.Id)).ToList();
+        var existing = _context.ClientProjects.Where(e => unSavedEntities.Select(c => c.Id).Contains(e.Id.ToString())).ToList();
 
         for (var i = 0; i < unSavedEntities.Count; i++)
         {
             var unSavedItem = unSavedEntities.ElementAt(i);
-            var savedItem = existing.Find(x => x.Id == unSavedItem.Id);
+            var savedItem = existing.Find(x => x.Id.ToString() == unSavedItem.Id);
 
             if (savedItem is not null)
             {
-                savedItem.ClientId = unSavedItem.ClientId;
-                savedItem.ProjectId = unSavedItem.ProjectId;
+                if (!Guid.TryParse(unSavedItem.ProjectId, out Guid projectId))
+                {
+                    throw new ArgumentException("Invalid Guid for unSavedItem.ProjectId");
+                }
+                if (!Guid.TryParse(unSavedItem.ClientId, out Guid clientId))
+                {
+                    throw new ArgumentException("Invalid Guid for unSavedItem.ClientId");
+                }
+                savedItem.ClientId = clientId;
+                savedItem.ProjectId = projectId;
             }
 
             returnList.Add(savedItem ?? _mapper.Map<ClientProject>(unSavedItem));

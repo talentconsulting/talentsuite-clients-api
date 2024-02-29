@@ -53,7 +53,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         var testClient = GetTestClientDto();
         var logger = new Mock<ILogger<UpdateClientCommandHandler>>();
 
-        var command = new UpdateClientCommand(_clientId, testClient);
+        var command = new UpdateClientCommand(_clientId.ToString(), testClient);
         var handler = new UpdateClientCommandHandler(mockApplicationDbContext, _mapper, logger.Object);
 
         //Act
@@ -96,7 +96,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
 
         //Assert
         result.Should().NotBeNull();
-        result.Items[0].Id.Should().Be(dbClient.Id);
+        result.Items[0].Id.Should().Be(dbClient.Id.ToString());
         result.Items[0].Name.Should().Be(dbClient.Name);
 
     }
@@ -115,7 +115,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
 
         //Assert
         result.Should().NotBeNull();
-        result.Items[0].Id.Should().Be(dbClient.Id);
+        result.Items[0].Id.Should().Be(dbClient.Id.ToString());
         result.Items[0].Name.Should().Be(dbClient.Name);
     }
 
@@ -127,6 +127,6 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
 
     public static ClientDto GetTestClientDto()
     {
-        return new ClientDto(_clientId, "Name", "Contact Name", "Contact Email", new List<ClientProjectDto>() { new ClientProjectDto(_clientProjectId, _clientId, _projectId) });
+        return new ClientDto(_clientId.ToString(), "Name", "Contact Name", "Contact Email", new List<ClientProjectDto>() { new ClientProjectDto(_clientProjectId.ToString(), _clientId.ToString(), _projectId.ToString()) });
     }
 }

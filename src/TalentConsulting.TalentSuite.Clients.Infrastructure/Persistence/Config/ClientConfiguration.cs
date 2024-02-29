@@ -17,10 +17,6 @@ public class ClientConfiguration
         builder.Property(t => t.ContactEmail)
             .IsRequired();
 
-        builder.Property(t => t.Created)
-            .IsRequired();
-
-
         builder.HasMany(s => s.ClientProjects)
             .WithOne()
             .HasForeignKey(lc => lc.ClientId)
