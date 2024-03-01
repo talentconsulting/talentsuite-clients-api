@@ -16,7 +16,7 @@ public class MinimalClientEndPoints
     private readonly string[] tag = new string[] { "Clients" };
     public void RegisterClientEndPoints(WebApplication app)
     {
-        app.MapPost("api/clients", [Authorize(Policy = "TalentConsultingUser")] async ([FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator) =>
+        app.MapPost("api/client", [Authorize(Policy = "TalentConsultingUser")] async ([FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator) =>
         {
             try
             {
@@ -31,7 +31,7 @@ public class MinimalClientEndPoints
             }
         }).WithMetadata(new SwaggerOperationAttribute("Clients", "Create client") { Tags = tag });
 
-        app.MapPut("api/clients/{id}", [Authorize(Policy = "TalentConsultingUser")] async (string id, [FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator, ILogger<MinimalClientEndPoints> logger) =>
+        app.MapPut("api/client/{id}", [Authorize(Policy = "TalentConsultingUser")] async (string id, [FromBody] ClientDto request, CancellationToken cancellationToken, ISender _mediator, ILogger<MinimalClientEndPoints> logger) =>
         {
             try
             {
@@ -61,5 +61,21 @@ public class MinimalClientEndPoints
                 throw;
             }
         }).WithMetadata(new SwaggerOperationAttribute("Get Clients", "Get Clients Paginated") { Tags = tag });
+
+        app.MapGet("api/client/{id}", [Authorize(Policy = "TalentConsultingUser")] async (string id, CancellationToken cancellationToken, ISender _mediator, ILogger<MinimalClientEndPoints> logger) =>
+        {
+            try
+            {
+                GetClientByIdCommand command = new(id);
+                var result = await _mediator.Send(command, cancellationToken);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred getting client (api). {exceptionMessage}", ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                throw;
+            }
+        }).WithMetadata(new SwaggerOperationAttribute("Get Client", "Get Client By Id") { Tags = tag });
     }
 }

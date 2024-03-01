@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using TalentConsulting.TalentSuite.Clients.Common;
 using TalentConsulting.TalentSuite.Clients.Common.Entities;
+using TalentConsulting.TalentSuite.Clients.Core.Entities;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace TalentConsulting.TalentSuite.Clients.FunctionalTests;
@@ -43,6 +44,38 @@ public class WhenUsingClientsApiUnitTests : BaseWhenUsingApiUnitTests
     }
 
     [Fact]
+    public async Task ThenGetClientById_IsRetrieved()
+    {
+        if (!IsRunningLocally() || _client == null)
+        {
+            // Skip the test if not running locally
+            Assert.True(true, "Test skipped because it is not running locally.");
+            return;
+        }
+
+        var expectedClient = new ClientDto("83c756a8-ff87-48be-a862-096678b41817", "Harry Potter", "DfE", "harry@potter.com", new List<ClientProjectDto>() { new ClientProjectDto("83c756a8-ff87-48be-a862-096678b41817", "83c756a8-ff87-48be-a862-096678b41817", "86b610ee-e866-4749-9f10-4a5c59e96f2f") });
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(_client.BaseAddress + $"api/client/{expectedClient.Id}"),
+        };
+
+        using var response = await _client.SendAsync(request);
+
+        response.EnsureSuccessStatusCode();
+
+        await response.Content.ReadAsStringAsync();
+
+        var retVal = await JsonSerializer.DeserializeAsync<ClientDto>(await response.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        ArgumentNullException.ThrowIfNull(retVal);
+        retVal.Should().NotBeNull();
+        retVal.Should().BeEquivalentTo(expectedClient);
+    }
+
+    [Fact]
     public async Task ThenTheClientIsCreated()
     {
         if (!IsRunningLocally() || _client == null)
@@ -57,7 +90,7 @@ public class WhenUsingClientsApiUnitTests : BaseWhenUsingApiUnitTests
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri(_client.BaseAddress + "api/clients"),
+            RequestUri = new Uri(_client.BaseAddress + "api/client"),
             Content = new StringContent(JsonConvert.SerializeObject(report), Encoding.UTF8, "application/json"),
         };
 
@@ -92,7 +125,7 @@ public class WhenUsingClientsApiUnitTests : BaseWhenUsingApiUnitTests
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri(_client.BaseAddress + "api/clients"),
+            RequestUri = new Uri(_client.BaseAddress + "api/client"),
             Content = new StringContent(JsonConvert.SerializeObject(report), Encoding.UTF8, "application/json"),
         };
 
@@ -111,7 +144,7 @@ public class WhenUsingClientsApiUnitTests : BaseWhenUsingApiUnitTests
         var updaterequest = new HttpRequestMessage
         {
             Method = HttpMethod.Put,
-            RequestUri = new Uri(_client.BaseAddress + $"api/clients/{updatedreport.Id}"),
+            RequestUri = new Uri(_client.BaseAddress + $"api/client/{updatedreport.Id}"),
             Content = new StringContent(JsonConvert.SerializeObject(updatedreport), Encoding.UTF8, "application/json"),
         };
 

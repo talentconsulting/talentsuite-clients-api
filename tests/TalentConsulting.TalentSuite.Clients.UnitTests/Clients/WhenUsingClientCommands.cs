@@ -131,7 +131,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
     }
 
     [Fact]
-    public async Task ThenGetClient()
+    public async Task ThenGetClients()
     {
         var mockApplicationDbContext = GetApplicationDbContext();
         var dbClient = GetTestClient();
@@ -168,6 +168,43 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         result.Should().NotBeNull();
         result.Items[0].Id.Should().Be(dbClient.Id.ToString());
         result.Items[0].Name.Should().Be(dbClient.Name);
+    }
+
+    [Fact]
+    public async Task ThenGetClientById()
+    {
+        var mockApplicationDbContext = GetApplicationDbContext();
+        var dbClient = GetTestClient();
+        mockApplicationDbContext.Clients.Add(dbClient);
+        await mockApplicationDbContext.SaveChangesAsync();
+        var expectedClient = _mapper.Map<ClientDto>(dbClient);
+
+
+        var command = new GetClientByIdCommand(dbClient.Id.ToString());
+        var handler = new GetClientByIdCommandHandler(mockApplicationDbContext, _mapper);
+
+        //Act
+        var result = await handler.Handle(command, new CancellationToken());
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(dbClient.Id.ToString());
+        expectedClient.Should().BeEquivalentTo(result);
+        
+    }
+
+    [Fact]
+    public async Task ThenGetClientByIdHandle_ThrowsException_WhenClientNotFound()
+    {
+        // Arrange
+        var dbContext = GetApplicationDbContext();
+        var handler = new GetClientByIdCommandHandler(dbContext, _mapper);
+        var command = new GetClientByIdCommand("someotherid");
+
+        // Act
+        //Assert
+        await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+
     }
 
     [Fact]
