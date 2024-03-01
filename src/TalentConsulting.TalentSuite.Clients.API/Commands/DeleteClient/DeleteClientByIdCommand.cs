@@ -19,6 +19,7 @@ public class DeleteClientByIdCommand : IRequest<bool>
     public string Id { get; set; }
 }
 
+#pragma warning disable CA1859
 public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCommand, bool>
 {
     private readonly IApplicationDbContext _context;
@@ -87,3 +88,5 @@ public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCo
     }
     
 }
+
+#pragma warning restore CA1859
