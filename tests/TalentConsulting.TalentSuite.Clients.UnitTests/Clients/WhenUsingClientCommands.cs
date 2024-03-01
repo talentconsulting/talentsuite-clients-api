@@ -1,14 +1,24 @@
 ﻿using Ardalis.GuardClauses;
+using AutoMapper;
+using Azure.Core;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Threading;
 using System.Xml.Serialization;
 using TalentConsulting.TalentSuite.Clients.API.Commands.CreateClient;
 using TalentConsulting.TalentSuite.Clients.API.Commands.DeleteClient;
 using TalentConsulting.TalentSuite.Clients.API.Commands.UpdateClient;
 using TalentConsulting.TalentSuite.Clients.API.Queries.GetClients;
 using TalentConsulting.TalentSuite.Clients.Common.Entities;
+using TalentConsulting.TalentSuite.Clients.Common.Interfaces;
+using TalentConsulting.TalentSuite.Clients.Core;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
+using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Interceptors;
+using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TalentConsulting.TalentSuite.Clients.UnitTests.Clients;
 
@@ -234,10 +244,10 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
 
     }
 
-
     [Fact]
-    public async Task ThenDeleteClientById()
+    public async Task Handle_ValidId_ClientDeleted()
     {
+        // Arrange
         var mockApplicationDbContext = GetApplicationDbContext();
         var dbClient = GetTestClient();
         mockApplicationDbContext.Clients.Add(dbClient);
@@ -248,17 +258,46 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         mockApplicationDbContext.Projects.Add(project);
         await mockApplicationDbContext.SaveChangesAsync();
 
-        var command = new DeleteClientByIdCommand(dbClient.Id.ToString());
-        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, _mapper);
+        var transactionMock = new Mock<IDbContextTransaction>();
 
-        //Act
-        var result = await handler.Handle(command, new CancellationToken());
+        var mapperMock = new Mock<IMapper>();
 
-        //Assert
-        result.Should().Be(true);
+        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, mapperMock.Object, transactionMock.Object);
 
+        // Act
+        var result = await handler.Handle(new DeleteClientByIdCommand(dbClient.Id.ToString()), CancellationToken.None);
+
+        // Assert
+        result.Should().BeTrue();
+        mockApplicationDbContext.Clients.Should().NotContain(x => x.Id == dbClient.Id);
     }
 
+
+    [Fact]
+    public async Task Handle_InvalidId_ClientNotDeleted()
+    {
+        // Arrange
+        var mockApplicationDbContext = GetApplicationDbContext();
+        var dbClient = GetTestClient();
+        mockApplicationDbContext.Clients.Add(dbClient);
+        var clientProject = mockApplicationDbContext.ClientProjects.Find(_clientProjectId);
+        var project = GetTestProject();
+        if (clientProject != null)
+            project.ClientProjects = new List<ClientProject>() { clientProject };
+        mockApplicationDbContext.Projects.Add(project);
+        await mockApplicationDbContext.SaveChangesAsync();
+
+        var transactionMock = new Mock<IDbContextTransaction>();
+
+        var mapperMock = new Mock<IMapper>();
+
+        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, mapperMock.Object, transactionMock.Object);
+
+        // Act
+        //Assert
+        await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new DeleteClientByIdCommand("1"), CancellationToken.None));
+        mockApplicationDbContext.Clients.Should().Contain(x => x.Id == dbClient.Id);
+    }
 
     public static Client GetTestClient()
     {

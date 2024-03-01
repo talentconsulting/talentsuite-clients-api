@@ -3,9 +3,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Collections.Generic;
-using TalentConsulting.TalentSuite.Clients.Common.Entities;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
+using TalentConsulting.TalentSuite.Clients.Core.Infrastructure;
 using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
 
 namespace TalentConsulting.TalentSuite.Clients.API.Commands.DeleteClient;
@@ -22,11 +21,13 @@ public class DeleteClientByIdCommand : IRequest<bool>
 
 public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCommand, bool>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IApplicationDbContext _context;
+    private readonly IDbContextTransaction _transaction;
 
-    public DeleteClientByIdCommandHandler(ApplicationDbContext context, IMapper mapper)
+    public DeleteClientByIdCommandHandler(ApplicationDbContext context, IMapper mapper, IDbContextTransaction transaction)
     {
         _context = context;
+        _transaction = transaction;
     }
 
     public async Task<bool> Handle(DeleteClientByIdCommand request, CancellationToken cancellationToken)
@@ -38,7 +39,7 @@ public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCo
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(ReportDto), request.Id.ToString());
+            throw new NotFoundException(nameof(Client), request.Id.ToString());
         }
 
         var projects = await _context.Projects
@@ -58,37 +59,21 @@ public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCo
             reports.AddRange(await _context.Reports.Where(x => x.ProjectId.ToString() == project.Id.ToString()).ToListAsync(cancellationToken));
         }
 
-        //This is done so we can use functional tests with in-memory database which does not support transactions
-        if (_context.Database.IsInMemory()) // Check if using in-memory database
+           
+        try
         {
-            try
-            {
-                RemoveEntities(reports, projects, entity);
+            RemoveEntities(reports, projects, entity);
 
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            await _transaction.CommitAsync(cancellationToken);
         }
-        else // Use transactions if not using in-memory database
+        catch (Exception)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                RemoveEntities(reports, projects, entity);
-
-                await _context.SaveChangesAsync(cancellationToken);
-
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                return false;
-            }
+            await _transaction.RollbackAsync(cancellationToken);
+            return false;
         }
+        
 
         return true;
     }
