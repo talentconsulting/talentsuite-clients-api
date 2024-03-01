@@ -7,6 +7,8 @@ using TalentConsulting.TalentSuite.Clients.Common.Interfaces;
 
 namespace TalentConsulting.TalentSuite.Clients.Core.Entities;
 
+#pragma warning disable S107 // Methods should not have too many parameters
+
 [ExcludeFromCodeCoverage]
 [Table("projects")]
 public class Project : EntityBaseEx<Guid>, IAggregateRoot
@@ -45,4 +47,6 @@ public class Project : EntityBaseEx<Guid>, IAggregateRoot
 
     public virtual ICollection<Sow> Sows { get; set; } = new Collection<Sow>();
 }
+
+#pragma warning restore S107 // Methods should not have too many parameters
 

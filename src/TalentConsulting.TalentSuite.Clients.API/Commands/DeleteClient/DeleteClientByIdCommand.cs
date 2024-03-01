@@ -81,11 +81,11 @@ public class DeleteClientByIdCommandHandler : IRequestHandler<DeleteClientByIdCo
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken);
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync(cancellationToken);
                 return false;
             }
         }

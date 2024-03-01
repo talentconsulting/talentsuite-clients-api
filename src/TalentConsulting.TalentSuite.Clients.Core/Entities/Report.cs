@@ -6,6 +6,7 @@ using TalentConsulting.TalentSuite.Clients.Common.Interfaces;
 
 namespace TalentConsulting.TalentSuite.Clients.Core.Entities;
 
+#pragma warning disable S107 // Methods should not have too many parameters
 
 [Table("reports")]
 public class Report : EntityBaseEx<Guid>, IAggregateRoot
@@ -38,3 +39,5 @@ public class Report : EntityBaseEx<Guid>, IAggregateRoot
 #endif
 
 }
+
+#pragma warning restore S107 // Methods should not have too many parameters
