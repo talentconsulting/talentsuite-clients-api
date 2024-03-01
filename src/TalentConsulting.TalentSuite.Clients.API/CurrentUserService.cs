@@ -1,8 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using TalentConsulting.TalentSuite.Clients.Core;
 
 namespace TalentConsulting.TalentSuite.Clients.API;
 
+[ExcludeFromCodeCoverage]
 public class CurrentUserService : ICurrentUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
