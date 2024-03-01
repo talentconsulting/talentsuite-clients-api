@@ -161,6 +161,58 @@ public class WhenUsingClientsApiUnitTests : BaseWhenUsingApiUnitTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         updateStringResult.Should().Be(updatedreport.Id);
     }
+    
+
+    [Fact]
+    public async Task ThenTheClientIsDeleted()
+    {
+        if (!IsRunningLocally() || _client == null)
+        {
+            // Skip the test if not running locally
+            Assert.True(true, "Test skipped because it is not running locally.");
+            return;
+        }
+
+        var id = Guid.NewGuid().ToString();
+        var report = GetTestClientDto(id);
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(_client.BaseAddress + "api/client"),
+            Content = new StringContent(JsonConvert.SerializeObject(report), Encoding.UTF8, "application/json"),
+        };
+
+#if ADD_BEARER_TOKEN
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue($"Bearer", $"{new JwtSecurityTokenHandler().WriteToken(_token)}");
+#endif
+
+        using var response = await _client.SendAsync(request);
+
+        response.EnsureSuccessStatusCode();
+
+        await response.Content.ReadAsStringAsync();
+
+        var deleterequest = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri(_client.BaseAddress + $"api/client/{id}"),
+        };
+
+#if ADD_BEARER_TOKEN
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue($"Bearer", $"{new JwtSecurityTokenHandler().WriteToken(_token)}");
+#endif
+
+        using var deletedresponse = await _client.SendAsync(deleterequest);
+
+        deletedresponse.EnsureSuccessStatusCode();
+
+        var deletedStringResult = await deletedresponse.Content.ReadAsStringAsync();
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        deletedStringResult.Should().Be("true");
+    }
+    
 
     public static ClientDto GetTestClientDto(string clientId)
     {

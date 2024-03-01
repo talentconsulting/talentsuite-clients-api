@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using TalentConsulting.TalentSuite.Clients.API.Commands.CreateClient;
+using TalentConsulting.TalentSuite.Clients.API.Commands.DeleteClient;
 using TalentConsulting.TalentSuite.Clients.API.Commands.UpdateClient;
 using TalentConsulting.TalentSuite.Clients.API.Queries.GetClients;
 using TalentConsulting.TalentSuite.Clients.Common.Entities;
@@ -77,5 +78,21 @@ public class MinimalClientEndPoints
                 throw;
             }
         }).WithMetadata(new SwaggerOperationAttribute("Get Client", "Get Client By Id") { Tags = tag });
+
+        app.MapDelete("api/client/{id}", [Authorize(Policy = "TalentConsultingUser")] async (string id, CancellationToken cancellationToken, ISender _mediator, ILogger<MinimalClientEndPoints> logger) =>
+        {
+            try
+            {
+                DeleteClientByIdCommand command = new(id);
+                var result = await _mediator.Send(command, cancellationToken);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred deleting client (api). {exceptionMessage}", ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                throw;
+            }
+        }).WithMetadata(new SwaggerOperationAttribute("Delete Client", "Delete Client By Id") { Tags = tag });
     }
 }

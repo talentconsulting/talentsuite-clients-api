@@ -2,7 +2,9 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Xml.Serialization;
 using TalentConsulting.TalentSuite.Clients.API.Commands.CreateClient;
+using TalentConsulting.TalentSuite.Clients.API.Commands.DeleteClient;
 using TalentConsulting.TalentSuite.Clients.API.Commands.UpdateClient;
 using TalentConsulting.TalentSuite.Clients.API.Queries.GetClients;
 using TalentConsulting.TalentSuite.Clients.Common.Entities;
@@ -233,6 +235,30 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
     }
 
 
+    [Fact]
+    public async Task ThenDeleteClientById()
+    {
+        var mockApplicationDbContext = GetApplicationDbContext();
+        var dbClient = GetTestClient();
+        mockApplicationDbContext.Clients.Add(dbClient);
+        var clientProject = mockApplicationDbContext.ClientProjects.Find(_clientProjectId);
+        var project = GetTestProject();
+        project.ClientProjects = new List<ClientProject>() { clientProject };
+        mockApplicationDbContext.Projects.Add(project);
+        await mockApplicationDbContext.SaveChangesAsync();
+
+        var command = new DeleteClientByIdCommand(dbClient.Id.ToString());
+        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, _mapper);
+
+        //Act
+        var result = await handler.Handle(command, new CancellationToken());
+
+        //Assert
+        result.Should().Be(true);
+
+    }
+
+
     public static Client GetTestClient()
     {
         return new Client(_clientId, "Name", "Contact Name", "Contact Email", new List<ClientProject>() { new ClientProject(_clientProjectId, _clientId, _projectId) });
@@ -245,5 +271,25 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
             return new ClientDto(_clientId.ToString(), "Name", "Contact Name", "Contact Email", new List<ClientProjectDto>());
         }
         return new ClientDto(_clientId.ToString(), "Name", "Contact Name", "Contact Email", new List<ClientProjectDto>() { new ClientProjectDto(_clientProjectId.ToString(), _clientId.ToString(), _projectId.ToString()) });
+    }
+
+    public static Project GetTestProject()
+    {
+        var sowFile = new SowFile
+        {
+            Id = _sowFileId,
+            File = new byte[] { 1, 2, 3, 4, 5 },
+            Mimetype = "application/pdf",
+            Filename = "test.pdf",
+            Size = 1234,
+            SowId = _sowId.ToString()
+        };
+        var sows = new List<Sow>() { new Sow(_sowId, DateTime.Now, new List<SowFile>(){ sowFile },true,DateTime.Now,DateTime.Now.AddDays(7),_projectId) };
+
+        return new Project(_projectId, "Contract Number", "Name", "Reference", DateTime.Now, DateTime.Now.AddDays(7),
+            new List<ClientProject>() { new ClientProject(_clientProjectId, _clientId, _projectId) },
+            new List<Contact>() { new Contact(_contactId, "Firstname", "Email", true, _projectId) },
+            new List<Report>() { new Report(_reportId, "Planned Tasks", "Completed Tasks", 1, DateTime.Now, _projectId, _userId,
+            new List<Risk>() { new Risk(_riskId, _reportId, "Risk Details", "Risk Mitigation", "RagStatus" ) }) }, sows);
     }
 }
