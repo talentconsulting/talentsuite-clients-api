@@ -243,7 +243,8 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         mockApplicationDbContext.Clients.Add(dbClient);
         var clientProject = mockApplicationDbContext.ClientProjects.Find(_clientProjectId);
         var project = GetTestProject();
-        project.ClientProjects = new List<ClientProject>() { clientProject };
+        if (clientProject != null)
+            project.ClientProjects = new List<ClientProject>() { clientProject };
         mockApplicationDbContext.Projects.Add(project);
         await mockApplicationDbContext.SaveChangesAsync();
 
