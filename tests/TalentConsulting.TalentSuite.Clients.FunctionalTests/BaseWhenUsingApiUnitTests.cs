@@ -51,8 +51,9 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
 
             _initSuccessful = true;
         }
-        catch
+        catch (Exception ex) 
         {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
             _initSuccessful = false;
         }
 

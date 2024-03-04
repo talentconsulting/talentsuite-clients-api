@@ -258,11 +258,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         mockApplicationDbContext.Projects.Add(project);
         await mockApplicationDbContext.SaveChangesAsync();
 
-        var transactionMock = new Mock<IDbContextTransaction>();
-
-        var mapperMock = new Mock<IMapper>();
-
-        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, mapperMock.Object, transactionMock.Object);
+        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext);
 
         // Act
         var result = await handler.Handle(new DeleteClientByIdCommand(dbClient.Id.ToString()), CancellationToken.None);
@@ -287,11 +283,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
         mockApplicationDbContext.Projects.Add(project);
         await mockApplicationDbContext.SaveChangesAsync();
 
-        var transactionMock = new Mock<IDbContextTransaction>();
-
-        var mapperMock = new Mock<IMapper>();
-
-        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext, mapperMock.Object, transactionMock.Object);
+        var handler = new DeleteClientByIdCommandHandler(mockApplicationDbContext);
 
         // Act
         //Assert

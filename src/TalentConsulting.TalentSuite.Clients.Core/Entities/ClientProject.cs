@@ -18,9 +18,11 @@ public class ClientProject : EntityBase<Guid>, IAggregateRoot
 
     public Guid ClientId { get; set; }
     public Guid ProjectId { get; set; }
+
+    public virtual Project Project { get; set; } = null!;
+
 #if ADD_ENTITY_NAV
     public virtual Client Client { get; set; } = null!;
-    public virtual Project Project { get; set; } = null!;
 #endif
 
 }
