@@ -47,12 +47,11 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
         {
             _mapper.Map(request.ClientDto, entity);
             ArgumentNullException.ThrowIfNull(entity);
-
             await _context.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred creating Client. {exceptionMessage}", ex.Message);
+            _logger.LogError(ex, "An error occurred updating Client. {exceptionMessage}", ex.Message);
             throw;
         }
 
