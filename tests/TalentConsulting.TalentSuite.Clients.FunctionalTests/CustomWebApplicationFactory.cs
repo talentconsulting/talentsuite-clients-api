@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
 
 namespace TalentConsulting.TalentSuite.Clients.FunctionalTests;
 
+[ExcludeFromCodeCoverage]
 public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
     /// <summary>

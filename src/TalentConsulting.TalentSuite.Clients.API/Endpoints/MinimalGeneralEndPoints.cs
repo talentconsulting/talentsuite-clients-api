@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TalentConsulting.TalentSuite.Clients.API.Endpoints;
 
+[ExcludeFromCodeCoverage]
 public class MinimalGeneralEndPoints
 {
     public void RegisterMinimalGeneralEndPoints(WebApplication app)
@@ -10,7 +12,7 @@ public class MinimalGeneralEndPoints
         {
             try
             {
-                var assembly = typeof(WebMarker).Assembly;
+                var assembly = typeof(IWebMarker).Assembly;
 
                 var creationDate = File.GetCreationTime(assembly.Location);
                 var version = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;

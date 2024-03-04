@@ -1,13 +1,16 @@
-﻿using TalentConsulting.TalentSuite.Clients.Common;
+﻿using System.Diagnostics.CodeAnalysis;
+using TalentConsulting.TalentSuite.Clients.Common;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
 
 namespace TalentConsulting.TalentSuite.Clients.Core.Events;
+
 
 public interface IClientCreatedEvent
 {
     Client Item { get; }
 }
 
+[ExcludeFromCodeCoverage]
 public class ClientCreatedEvent : DomainEventBase, IClientCreatedEvent
 { 
     public ClientCreatedEvent(Client item)

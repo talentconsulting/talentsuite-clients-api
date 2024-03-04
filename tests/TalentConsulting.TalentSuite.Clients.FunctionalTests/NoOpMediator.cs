@@ -1,8 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using MediatR;
 
 namespace TalentConsulting.TalentSuite.Clients.FunctionalTests;
 
+[ExcludeFromCodeCoverage]
 public class NoOpMediator : IMediator
 {
     public Task Publish(object notification, CancellationToken cancellationToken = default)

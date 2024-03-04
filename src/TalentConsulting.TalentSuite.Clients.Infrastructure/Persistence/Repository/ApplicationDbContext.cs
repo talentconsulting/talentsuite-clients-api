@@ -77,5 +77,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<ClientProject> ClientProjects => Set<ClientProject>();
-    
+    public DbSet<Contact> Contacts => Set<Contact>();
+    public DbSet<Project> Projects => Set<Project>();
+    public DbSet<Report> Reports => Set<Report>();
+    public DbSet<Risk> Risks => Set<Risk>();
+    public DbSet<Sow> Sows => Set<Sow>();
+    public DbSet<SowFile> SowFiles => Set<SowFile>();
+
 }

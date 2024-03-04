@@ -1,13 +1,14 @@
-﻿namespace TalentConsulting.TalentSuite.Clients.Common;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TalentConsulting.TalentSuite.Clients.Common;
 
 /// <summary>
 /// See: https://enterprisecraftsmanship.com/posts/value-object-better-implementation/
 /// </summary>
+[ExcludeFromCodeCoverage]
 [Serializable]
 public abstract class ValueObject : ValueObjectBase, IComparable, IComparable<ValueObject>
 {
-    private int? _cachedHashCode;
-
     public override bool Equals(object? obj)
     {
         if (obj == null)
@@ -23,19 +24,9 @@ public abstract class ValueObject : ValueObjectBase, IComparable, IComparable<Va
 
     public override int GetHashCode()
     {
-        if (!_cachedHashCode.HasValue)
-        {
-            _cachedHashCode = GetEqualityComponents()
-                .Aggregate(1, (current, obj) =>
-                {
-                    unchecked
-                    {
-                        return current * 23 + (obj?.GetHashCode() ?? 0);
-                    }
-                });
-        }
-
-        return _cachedHashCode.Value;
+        return GetEqualityComponents()
+            .Select(obj => obj?.GetHashCode() ?? 0)
+            .Aggregate(17, (current, hash) => current * 23 + hash);
     }
 
     public int CompareTo(ValueObject? other)

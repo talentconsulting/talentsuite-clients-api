@@ -1,5 +1,8 @@
-﻿namespace TalentConsulting.TalentSuite.Clients.Common;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace TalentConsulting.TalentSuite.Clients.Common;
+
+[ExcludeFromCodeCoverage]
 public class Result
 {
     internal Result(bool succeeded, IEnumerable<string> errors)

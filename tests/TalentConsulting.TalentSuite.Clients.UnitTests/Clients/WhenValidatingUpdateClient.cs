@@ -31,7 +31,7 @@ public class WhenValidatingUpdateClient : BaseTestValidation
         var result = validator.Validate(testModel);
 
         //Assert
-        result.Errors.Any(x => x.PropertyName == "ClientDto.Id").Should().BeTrue();
+        result.Errors.Exists(x => x.PropertyName == "ClientDto.Id").Should().BeTrue();
     }
 
     [Theory]
@@ -47,7 +47,7 @@ public class WhenValidatingUpdateClient : BaseTestValidation
         var result = validator.Validate(testModel);
 
         //Assert
-        result.Errors.Any(x => x.PropertyName == "Id").Should().BeTrue();
+        result.Errors.Exists(x => x.PropertyName == "Id").Should().BeTrue();
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class WhenValidatingUpdateClient : BaseTestValidation
         var result = validator.Validate(testModel);
 
         //Assert
-        result.Errors.Any(x => x.PropertyName == "ClientDto.Name").Should().BeTrue();
+        result.Errors.Exists(x => x.PropertyName == "ClientDto.Name").Should().BeTrue();
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class WhenValidatingUpdateClient : BaseTestValidation
         var result = validator.Validate(testModel);
 
         //Assert
-        result.Errors.Any(x => x.PropertyName == "ClientDto.ContactName").Should().BeTrue();
+        result.Errors.Exists(x => x.PropertyName == "ClientDto.ContactName").Should().BeTrue();
     }
 
     [Fact]
@@ -89,6 +89,6 @@ public class WhenValidatingUpdateClient : BaseTestValidation
         var result = validator.Validate(testModel);
 
         //Assert
-        result.Errors.Any(x => x.PropertyName == "ClientDto.ContactEmail").Should().BeTrue();
+        result.Errors.Exists(x => x.PropertyName == "ClientDto.ContactEmail").Should().BeTrue();
     }
 }

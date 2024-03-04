@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TalentConsulting.TalentSuite.Clients.Common.Entities;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
 using TalentConsulting.TalentSuite.Clients.Core.Interfaces.Commands;
@@ -33,7 +34,10 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
     }
     public async Task<string> Handle(UpdateClientCommand request, CancellationToken cancellationToken)
     {
-        var entity = _context.Clients.FirstOrDefault(x => x.Id == request.Id);
+        var entity = _context.Clients.AsNoTracking()
+            .Include(x => x.ClientProjects)
+            .FirstOrDefault(x => x.Id.ToString() == request.Id);
+
         if (entity == null)
         {
             throw new NotFoundException(nameof(Client), request.Id);
@@ -41,17 +45,13 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
 
         try
         {
-            entity.Name = request.ClientDto.Name;
-            entity.ContactName = request.ClientDto.ContactName;
-            entity.ContactEmail = request.ClientDto.ContactEmail;
-
-            entity.ClientProjects = AttachExistingClientProjects(request.ClientDto.ClientProjects);
-
+            _mapper.Map(request.ClientDto, entity);
+            ArgumentNullException.ThrowIfNull(entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred creating Client. {exceptionMessage}", ex.Message);
+            _logger.LogError(ex, "An error occurred updating Client. {exceptionMessage}", ex.Message);
             throw;
         }
 
@@ -59,31 +59,5 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
             return request.ClientDto.Id;
         else
             return string.Empty;
-    }
-
-    private ICollection<ClientProject> AttachExistingClientProjects(ICollection<ClientProjectDto>? unSavedEntities)
-    {
-        var returnList = new List<ClientProject>();
-
-        if (unSavedEntities is null || !unSavedEntities.Any())
-            return returnList;
-
-        var existing = _context.ClientProjects.Where(e => unSavedEntities.Select(c => c.Id).Contains(e.Id)).ToList();
-
-        for (var i = 0; i < unSavedEntities.Count; i++)
-        {
-            var unSavedItem = unSavedEntities.ElementAt(i);
-            var savedItem = existing.Find(x => x.Id == unSavedItem.Id);
-
-            if (savedItem is not null)
-            {
-                savedItem.ClientId = unSavedItem.ClientId;
-                savedItem.ProjectId = unSavedItem.ProjectId;
-            }
-
-            returnList.Add(savedItem ?? _mapper.Map<ClientProject>(unSavedItem));
-        }
-
-        return returnList;
     }
 }

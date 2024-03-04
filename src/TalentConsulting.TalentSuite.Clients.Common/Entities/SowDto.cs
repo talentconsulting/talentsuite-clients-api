@@ -1,16 +1,19 @@
-﻿using System.Reflection.Metadata;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 
 namespace TalentConsulting.TalentSuite.Clients.Common.Entities;
 
+[ExcludeFromCodeCoverage]
 public record SowDto
 {
     private SowDto() { }
 
-    public SowDto(string id, DateTime created, byte[] file, bool ischangerequest, DateTime startdate, DateTime enddate, string projectId)
+    public SowDto(string id, DateTime created, ICollection<SowFileDto> files, bool ischangerequest, DateTime startdate, DateTime enddate, string projectId)
     {
         Id = id;
         Created = created;
-        File = file;
+        Files = files;
         IsChangeRequest = ischangerequest;
         StartDate = startdate;
         EndDate = enddate;
@@ -28,5 +31,7 @@ public record SowDto
 #if ADD_ENTITY_NAV
     public ProjectDto Project { get; set; } = default!;
 #endif
+
+    public virtual ICollection<SowFileDto> Files { get; set; } = new Collection<SowFileDto>();
 
 }

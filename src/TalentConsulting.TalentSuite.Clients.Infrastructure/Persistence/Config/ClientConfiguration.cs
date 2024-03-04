@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 using TalentConsulting.TalentSuite.Clients.Core.Entities;
 
 namespace TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Config;
 
-public class ClientConfiguration
+[ExcludeFromCodeCoverage]
+public static class ClientConfiguration
 {
-    public void Configure(EntityTypeBuilder<Client> builder)
+    public static void Configure(EntityTypeBuilder<Client> builder)
     {
         builder.Property(t => t.Id)
             .IsRequired();
@@ -16,10 +18,6 @@ public class ClientConfiguration
             .IsRequired();
         builder.Property(t => t.ContactEmail)
             .IsRequired();
-
-        builder.Property(t => t.Created)
-            .IsRequired();
-
 
         builder.HasMany(s => s.ClientProjects)
             .WithOne()

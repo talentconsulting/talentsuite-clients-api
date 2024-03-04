@@ -10,6 +10,7 @@ public record ClientDto
         Name = name;
         ContactName = contactname;
         ContactEmail = contactemail;
+        ClientProjects = clientProjects;
     }
 
     public string Id { get; init; } = default!;

@@ -6,6 +6,7 @@ using TalentConsulting.TalentSuite.Clients.Core.Entities;
 using TalentConsulting.TalentSuite.Clients.Core.Helpers;
 using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
+using TalentConsulting.TalentSuite.Clients.Core.Infrastructure;
 
 namespace TalentConsulting.TalentSuite.Clients.API.Queries.GetClients;
 
@@ -23,7 +24,7 @@ public class GetClientsCommand : IRequest<PaginatedList<ClientDto>>
 
 public class GetClientsCommandHandler : IRequestHandler<GetClientsCommand, PaginatedList<ClientDto>>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IApplicationDbContext _context;
 
     public GetClientsCommandHandler(ApplicationDbContext context)
     {
@@ -34,12 +35,7 @@ public class GetClientsCommandHandler : IRequestHandler<GetClientsCommand, Pagin
         var entities = _context.Clients
             .Include(x => x.ClientProjects);
 
-        if (entities == null)
-        {
-            throw new NotFoundException(nameof(Client), "Clients");
-        }
-
-        var filteredClients = await entities.Select(x => new ClientDto(x.Id, x.Name, x.ContactName, x.ContactEmail, EntityToDtoHelper.GetClientProjects(x.ClientProjects))).ToListAsync();
+        var filteredClients = await entities.Select(x => new ClientDto(x.Id.ToString(), x.Name, x.ContactName, x.ContactEmail, EntityToDtoHelper.GetClientProjects(x.ClientProjects))).ToListAsync(cancellationToken);
 
         if (request != null)
         {

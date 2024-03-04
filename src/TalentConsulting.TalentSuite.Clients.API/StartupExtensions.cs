@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using TalentConsulting.TalentSuite.Clients.API.Endpoints;
 using TalentConsulting.TalentSuite.Clients.Infrastructure;
@@ -11,6 +12,7 @@ using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository
 
 namespace TalentConsulting.TalentSuite.Clients.API;
 
+[ExcludeFromCodeCoverage]
 public static class StartupExtensions
 {
     public static void ConfigureHost(this WebApplicationBuilder builder)

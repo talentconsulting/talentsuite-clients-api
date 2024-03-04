@@ -1,15 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TalentConsulting.TalentSuite.Clients.Common;
 
 /// <summary>
 /// Base types for all Entities which track state using a given Id.
 /// </summary>
+[ExcludeFromCodeCoverage]
+public abstract class EntityBaseEx<Tid> : EntityBase<Tid>
+{
+    public DateTime? Created { get; set; } = default;
+
+}
+
+[ExcludeFromCodeCoverage]
 public abstract class EntityBase<Tid>
 {
     public Tid Id { get; set; } = default!;
 
-    public DateTime? Created { get; set; } = default;
 
     private readonly List<DomainEventBase> _domainEvents = new();
 

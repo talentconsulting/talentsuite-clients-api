@@ -1,14 +1,15 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TalentConsulting.TalentSuite.Clients.API;
-using TalentConsulting.TalentSuite.Clients.Core.Entities;
 using TalentConsulting.TalentSuite.Clients.Infrastructure.Persistence.Repository;
 
 namespace TalentConsulting.TalentSuite.Clients.FunctionalTests;
+
+#pragma warning disable S3881
 
 public abstract class BaseWhenUsingApiUnitTests : IDisposable
 {
@@ -34,18 +35,11 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
         try
         {
             var config = new ConfigurationBuilder()
-               .AddUserSecrets<Program>()
-               .Build();
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                 .AddJsonFile("appsettings.test.json")
+                 .Build();
 
             _configuration = config;
-
-            //var config = new ConfigurationBuilder()
-            //.AddInMemoryCollection(new List<KeyValuePair<string, string?>>()
-            //{
-            //    new KeyValuePair<string, string?>("UseDbType", "UseInMemoryDatabase"),
-            //    new KeyValuePair<string, string?>("JWT:Secret", "JWTAuthenticationHIGHsecuredPasswordVVVp1OH7Xzyr")
-            //})
-            //.Build();
 
             List<Claim> authClaims = new List<Claim> { new Claim(ClaimTypes.Role, "TalentConsultingUser") };
             _token = CreateToken(authClaims, config);
@@ -57,8 +51,9 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
 
             _initSuccessful = true;
         }
-        catch
+        catch (Exception ex) 
         {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
             _initSuccessful = false;
         }
 
@@ -148,3 +143,4 @@ public abstract class BaseWhenUsingApiUnitTests : IDisposable
         return false;
     }
 }
+#pragma warning restore S3881
