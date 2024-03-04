@@ -322,7 +322,7 @@ public class WhenUsingClientCommands : BaseCreateDbUnitTest
             Mimetype = "application/pdf",
             Filename = "test.pdf",
             Size = 1234,
-            SowId = _sowId.ToString()
+            SowId = _sowId
         };
         var sows = new List<Sow>() { new Sow(_sowId, DateTime.Now, new List<SowFile>(){ sowFile },true,DateTime.Now,DateTime.Now.AddDays(7),_projectId) };
 
