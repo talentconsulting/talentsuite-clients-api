@@ -45,7 +45,7 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, s
 
         try
         {
-            entity = _mapper.Map<Client>(request.ClientDto);
+            _mapper.Map(request.ClientDto, entity);
             ArgumentNullException.ThrowIfNull(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
